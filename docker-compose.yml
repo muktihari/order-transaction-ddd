@@ -1,0 +1,33 @@
+version: "3.7"
+
+services:
+  order-transaction-ddd:
+      build:
+        context: .
+      container_name: order-transaction-ddd
+      ports:
+          - 8080:8080
+      environment:
+          HTTP_ADDRESS: ":8080"
+          MONGO_URI: "mongodb://mongo1:27017"
+          REPO: "mongo"
+          MIGRATE: "true"
+      depends_on:
+        - mongo1
+      networks:
+        - order-transaction-ddd
+
+  # TODO: need to set replica sets
+  mongo1:
+      image: mongo:4.4
+      container_name: mongo1
+      ports:
+          - 27017:27017
+      networks:
+        - order-transaction-ddd
+
+volumes:
+  mongo-data:
+
+networks:
+  order-transaction-ddd:
